@@ -4,12 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rank'
     ];
 
     /**
@@ -44,4 +47,32 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // public function matches(): HasMany
+    // {
+    //     return $this->hasMany(Matches::class);
+    // }
+
+    public function opponent_1()
+    {
+        return $this->belongsTo(Matches::class, 'opponent_1');
+    }
+
+    public function opponent_2()
+    {
+        return $this->belongsTo(Matches::class, 'opponent_2');
+    }
+
+    public function matches()
+    {
+        return Matches::where('opponent1_id', $this->id)
+            ->orWhere('opponent2_id', $this->id)
+            ->get();
+    }
+
+
+    // public function opponent_1(): HasMany
+    // {
+    //     return $this->hasMany(Matches::class, 'opponent_id');
+    // }
 }
