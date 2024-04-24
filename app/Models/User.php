@@ -48,25 +48,26 @@ class User extends Authenticatable
         ];
     }
 
-    // public function matches(): HasMany
-    // {
-    //     return $this->hasMany(Matches::class);
-    // }
+    public function user()
+    {
+        return $this->hasMany(Matches::class);
+    }
 
     public function opponent_1()
     {
-        return $this->belongsTo(Matches::class, 'opponent_1');
+        return $this->hasMany(Matches::class, 'opponent_1');
     }
 
     public function opponent_2()
     {
-        return $this->belongsTo(Matches::class, 'opponent_2');
+        return $this->hasMany(Matches::class, 'opponent_2');
     }
 
     public function matches()
     {
-        return Matches::where('opponent1_id', $this->id)
-            ->orWhere('opponent2_id', $this->id)
+        // return $this->hasMany(Matches::class, 'user_id');
+        return Matches::where('opponent_1', $this->id)
+            ->orWhere('opponent_2', $this->id)
             ->get();
     }
 
