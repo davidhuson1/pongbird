@@ -22,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'rank'
+        'rating'
     ];
 
     /**
@@ -53,21 +53,21 @@ class User extends Authenticatable
         return $this->hasMany(Matches::class);
     }
 
-    public function opponent_1()
+    public function opponent_a()
     {
-        return $this->hasMany(Matches::class, 'opponent_1');
+        return $this->hasMany(Matches::class, 'opponent_a');
     }
 
-    public function opponent_2()
+    public function opponent_b()
     {
-        return $this->hasMany(Matches::class, 'opponent_2');
+        return $this->hasMany(Matches::class, 'opponent_b');
     }
 
     public function matches()
     {
         // return $this->hasMany(Matches::class, 'user_id');
-        return Matches::where('opponent_1', $this->id)
-            ->orWhere('opponent_2', $this->id)
+        return Matches::where('opponent_a', $this->id)
+            ->orWhere('opponent_b', $this->id)
             ->get();
     }
 

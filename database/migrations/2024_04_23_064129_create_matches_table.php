@@ -15,12 +15,12 @@ return new class extends Migration
         Schema::create('matches', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('opponent_1');
-            $table->foreign('opponent_1')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('opponent_2');
-            $table->foreign('opponent_2')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedTinyInteger('score_opponent_1');
-            $table->unsignedTinyInteger('score_opponent_2');
+            $table->unsignedBigInteger('opponent_a');
+            $table->foreign('opponent_a')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('opponent_b');
+            $table->foreign('opponent_b')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedTinyInteger('score_opponent_a');
+            $table->unsignedTinyInteger('score_opponent_b');
             $table->string('winner', 20);
         });
     }

@@ -20,11 +20,11 @@ class MatchesFactory extends Factory
     {
         return [
             'user_id' => User::all()->random()->id,
-            'opponent_1' => 41,
-            'opponent_2' => User::all()->random()->id,
-            'score_opponent_1' => $this->faker->randomNumber(2, false),
-            'score_opponent_2' => $this->faker->randomNumber(2, false),
-            'winner' => $this->faker->randomElement(['opponent_1', 'opponent_2', 'tie'])
+            'opponent_a' => 11,
+            'opponent_b' => User::all()->random()->id,
+            'score_opponent_a' => $this->faker->randomNumber(2, false),
+            'score_opponent_b' => $this->faker->randomNumber(2, false),
+            'winner' => $this->faker->randomElement(['opponent_a', 'opponent_b', 'tie'])
         ];
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
 class EloRating
 {
     /**
@@ -17,11 +20,18 @@ class EloRating
     const LOSS = 0;
     const TIE = 0.5;
 
-    public static function getNewRatingForMatch($ratingA, $ratingB, int $scoreA, int $scoreB)
+
+    public static function getNewRatingForMatch($opponentA, $opponentB,  int $scoreA, int $scoreB)
     {
-        echo "calculate rating";
-        $expectedScoreA = 1 / (1 + (10 ** (($ratingB - $ratingA) / 400)));
-        $expectedScoreB = 1 / (1 + (10 ** (($ratingA - $ratingB) / 400)));
+
+
+
+        $currentRatingA = User::find($opponentA)->rating;
+        $currentRatingB = User::find($opponentB)->rating;
+
+
+        $expectedScoreA = 1 / (1 + (10 ** (($currentRatingB - $currentRatingA) / 400)));
+        $expectedScoreB = 1 / (1 + (10 ** (($currentRatingA - $currentRatingB) / 400)));
 
         if ($scoreA > $scoreB) {
             $scoreA = self::WIN;
@@ -34,8 +44,16 @@ class EloRating
             $scoreB = self::TIE;
         }
 
-        $newRatingA = $ratingA + (self::KFACTOR * ($scoreA - $expectedScoreA));
-        $newRatingB = $ratingB + (self::KFACTOR * ($scoreB - $expectedScoreB));
+        $newRatingA = (int)round($currentRatingA + (self::KFACTOR * ($scoreA - $expectedScoreA)));
+        $newRatingB = (int)round($currentRatingB + (self::KFACTOR * ($scoreB - $expectedScoreB)));
+
+        // DB::table('users')
+        //     ->where('id', 12)
+        //     ->update(['rating' => $currentRatingA + 1001]);
+
+
+        User::find($opponentA)->update(['rating' => $newRatingA]);
+        User::find($opponentB)->update(['rating' => $newRatingB]);
 
         return [
             "expected score A" => $expectedScoreA,
@@ -47,11 +65,10 @@ class EloRating
         ];
     }
 
-    protected function _getExpectedScores($ratingA, $ratingB)
-    {
-
-        $expectedScoreA = 1 / (1 + (10 ** (($ratingB - $ratingA) / 400)));
-        $expectedScoreB = 1 / (1 + (10 ** (($ratingA - $ratingB) / 400)));
-        return [$expectedScoreA, $expectedScoreB];
-    }
+    // protected function _getExpectedScores($ratingA, $ratingB)
+    // {
+    //     $expectedScoreA = 1 / (1 + (10 ** (($ratingB - $ratingA) / 400)));
+    //     $expectedScoreB = 1 / (1 + (10 ** (($ratingA - $ratingB) / 400)));
+    //     return [$expectedScoreA, $expectedScoreB];
+    // }
 }

@@ -11,10 +11,10 @@ class Matches extends Model
 
     protected $fillable = [
         'user_id',
-        'opponent_1',
-        'opponent_2',
-        'score_opponent_1',
-        'score_opponent_2',
+        'opponent_a',
+        'opponent_b',
+        'score_opponent_a',
+        'score_opponent_b',
         'winner'
     ];
 
@@ -23,13 +23,13 @@ class Matches extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function user_1()
+    public function user_a()
     {
-        return $this->belongsTo(User::class, 'opponent_1');
+        return $this->belongsTo(User::class, 'opponent_a');
     }
 
-    public function user_2()
+    public function user_b()
     {
-        return $this->belongsTo(User::class, 'opponent_2');
+        return $this->belongsTo(User::class, 'opponent_b');
     }
 }
