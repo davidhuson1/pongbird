@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\HistoricRankings;
+use App\Models\HistoricRatings;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -55,11 +57,23 @@ class EloRating
         User::find($opponentA)->update(['rating' => $newRatingA]);
         User::find($opponentB)->update(['rating' => $newRatingB]);
 
+        HistoricRatings::create([
+            'user_id' => $opponentA,
+            'rating' => $newRatingA,
+        ]);
+
+        HistoricRatings::create([
+            'user_id' => $opponentB,
+            'rating' => $newRatingB,
+        ]);
+
         return [
             "expected score A" => $expectedScoreA,
             "expected score B" => $expectedScoreB,
             "score A" => $scoreA,
             "score B" => $scoreB,
+            "currentRating A" => $currentRatingA,
+            "currentRating B" => $currentRatingB,
             "newRatingA" => $newRatingA,
             "newRatingB" => $newRatingB
         ];

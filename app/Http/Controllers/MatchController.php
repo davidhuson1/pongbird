@@ -59,6 +59,7 @@ class MatchController extends Controller
             $winner = "tie";
         }
 
+        EloRating::getNewRatingForMatch($opponentA, $opponentB, $scoreOpponentA, $scoreOpponentB);
 
         $match = Matches::create([
             'user_id' => Auth::user()->id,
@@ -68,8 +69,6 @@ class MatchController extends Controller
             'score_opponent_b' => $request->score_opponent_b,
             'winner' => $winner,
         ]);
-
-        EloRating::getNewRatingForMatch($opponentA, $opponentB, $scoreOpponentA, $scoreOpponentB);
 
         // DB::table('users')
         //     ->where('id', 41)

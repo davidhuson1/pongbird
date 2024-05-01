@@ -71,6 +71,10 @@ class User extends Authenticatable
             ->get();
     }
 
+    public function historicRatings()
+    {
+        return $this->hasMany(HistoricRatings::class, 'user_id');
+    }
 
     // public function opponent_1(): HasMany
     // {
