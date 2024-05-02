@@ -5,6 +5,7 @@ namespace App;
 use App\Models\HistoricRankings;
 use App\Models\HistoricRatings;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class EloRating
@@ -49,23 +50,36 @@ class EloRating
         $newRatingA = (int)round($currentRatingA + (self::KFACTOR * ($scoreA - $expectedScoreA)));
         $newRatingB = (int)round($currentRatingB + (self::KFACTOR * ($scoreB - $expectedScoreB)));
 
-        // DB::table('users')
-        //     ->where('id', 12)
-        //     ->update(['rating' => $currentRatingA + 1001]);
-
-
         User::find($opponentA)->update(['rating' => $newRatingA]);
         User::find($opponentB)->update(['rating' => $newRatingB]);
 
-        HistoricRatings::create([
-            'user_id' => $opponentA,
-            'rating' => $newRatingA,
-        ]);
+        $historic_ratings = [
+            [
+                'user_id' => $opponentA,
+                'rating' => $newRatingA,
+                'created_at' =>  Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'user_id' => $opponentB,
+                'rating' => $newRatingB,
+                'created_at' =>  Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        ];
 
-        HistoricRatings::create([
-            'user_id' => $opponentB,
-            'rating' => $newRatingB,
-        ]);
+        HistoricRatings::insert($historic_ratings);
+
+
+        // HistoricRatings::create([
+        //     'user_id' => $opponentA,
+        //     'rating' => $newRatingA,
+        // ]);
+
+        // HistoricRatings::create([
+        //     'user_id' => $opponentB,
+        //     'rating' => $newRatingB,
+        // ]);
 
         return [
             "expected score A" => $expectedScoreA,
@@ -78,11 +92,4 @@ class EloRating
             "newRatingB" => $newRatingB
         ];
     }
-
-    // protected function _getExpectedScores($ratingA, $ratingB)
-    // {
-    //     $expectedScoreA = 1 / (1 + (10 ** (($ratingB - $ratingA) / 400)));
-    //     $expectedScoreB = 1 / (1 + (10 ** (($ratingA - $ratingB) / 400)));
-    //     return [$expectedScoreA, $expectedScoreB];
-    // }
 }
