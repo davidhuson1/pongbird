@@ -40,8 +40,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255|string',
-            'email' => 'required|email',
+            'name' => 'required|max:255|string|unique:users,name',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6'
         ]);
 
