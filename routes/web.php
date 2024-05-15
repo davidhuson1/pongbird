@@ -1,8 +1,18 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MatchController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'show'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::inertia('/', 'HomePage');
+
+// protected
+Route::group(['middleware' => ["auth:sanctum"]], function () {
+    Route::resource('/matches', MatchController::class);
+    // Route::get('/dashboard', []);
+    // Route::get('/matches', [MatchController::class, 'index']);
+    Route::inertia('/dashboard', 'DashboardPage');
 });

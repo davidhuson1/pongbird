@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\EloRating;
 use App\Models\User;
+use Inertia\Inertia;
 
 class MatchController extends Controller
 {
@@ -17,10 +18,17 @@ class MatchController extends Controller
      */
     public function index()
     {
-        return MatchesResource::collection(
-            Matches::where('opponent_a', Auth::id())
-                ->orWhere('opponent_b', Auth::id())->get()
-        );
+        return Inertia::render('DashboardPage', [
+            'user' => Auth::user(),
+            'matches' => MatchesResource::collection(
+                Matches::where('opponent_a', Auth::id())
+                    ->orWhere('opponent_b', Auth::id())->get()
+            )
+        ]);
+        // return MatchesResource::collection(
+        //     Matches::where('opponent_a', Auth::id())
+        //         ->orWhere('opponent_b', Auth::id())->get()
+        // );
         // return Matches::where('opponent_1', Auth::id())
         //     ->orWhere('opponent_2', Auth::id())->get();
     }

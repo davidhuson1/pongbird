@@ -8,20 +8,25 @@ const credentials = reactive({
     password: "",
     password_confirmation: "",
 });
-const errors = ref(false);
+const errors = ref(null);
+const success = ref(false);
 
 const hanldeSignUp = () => {
-    console.log("signup");
+    errors.value = null;
+    success.value = false;
 
-    const instance = axios.create({
+    const axiosInstance = axios.create({
         baseURL: "http://localhost/api",
         headers: {},
     });
 
-    instance
+    axiosInstance
         .post("/register", credentials)
         .then((response) => {
-            console.log(response);
+            if (response.status === 200) {
+                success.value = true;
+                window.location.href = "/login";
+            }
         })
         .catch((error) => {
             console.log(error.message);
@@ -32,8 +37,8 @@ const hanldeSignUp = () => {
 
 <template>
     <div class="rounded-md">
-        <div class="bg-white shadow-md p-8 w-1/2 mx-auto">
-            <div class="p-2 text-center text-xl w-full">Login</div>
+        <div class="bg-white shadow-md p-8 lg:w-1/2 mx-auto">
+            <div class="p-2 text-center text-xl w-full">Register</div>
             <div class="p-2">
                 <div class="w-full pb-2">
                     <input
@@ -76,8 +81,11 @@ const hanldeSignUp = () => {
                         placeholder="Confirm password"
                     />
                 </div>
+                <p v-if="errors" class="text-red-500">{{ errors }}</p>
+                <p v-if="success" class="text-green-500">
+                    Account successfully created!
+                </p>
             </div>
-            <p>{{ errors }}</p>
 
             <div class="pt-8 text-center">
                 <button
