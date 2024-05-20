@@ -18,7 +18,7 @@ class MatchController extends Controller
      */
     public function index()
     {
-        return Inertia::render('DashboardPage', [
+        return Inertia::render('MatchesPage', [
             'user' => Auth::user(),
             'matches' => MatchesResource::collection(
                 Matches::where('opponent_a', Auth::id())

@@ -13,6 +13,6 @@ Route::inertia('/', 'HomePage');
 Route::group(['middleware' => ["auth:sanctum"]], function () {
     Route::resource('/matches', MatchController::class);
     // Route::get('/dashboard', []);
-    // Route::get('/matches', [MatchController::class, 'index']);
+    Route::get('/matches', [MatchController::class, 'index']);
     Route::inertia('/dashboard', 'DashboardPage');
 });
