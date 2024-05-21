@@ -25,7 +25,6 @@ const handleLogin = async () => {
         .then((response) => {
             if (response.status === 200) {
                 success.value = true;
-
                 window.location.href = "/dashboard";
                 return response.data;
             }

@@ -23,7 +23,8 @@ class MatchController extends Controller
             'matches' => MatchesResource::collection(
                 Matches::where('opponent_a', Auth::id())
                     ->orWhere('opponent_b', Auth::id())->get()
-            )
+            ),
+            'users' => User::select('id', 'name')->get()
         ]);
         // return MatchesResource::collection(
         //     Matches::where('opponent_a', Auth::id())

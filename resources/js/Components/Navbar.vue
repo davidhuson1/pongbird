@@ -37,7 +37,7 @@ const toggleMenu = () => {
             <div
                 v-show="isMenuOpen"
                 id="nav-menu-links"
-                class="lg:hidden bg-pb-yellow rounded-b-md shadow-md py-4 w-full left-0 absolute top-10 flex-col flex items-center font-bold gap-2 text-pb-soft-grey"
+                class="lg:hidden z-10 bg-pb-yellow rounded-b-md shadow-md py-4 w-full left-0 absolute top-10 flex-col flex items-center font-bold gap-2 text-pb-soft-grey"
             >
                 <Link class="hover:text-pb-dark-grey" href="/"
                     >Leaderboard</Link
