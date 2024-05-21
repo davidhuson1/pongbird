@@ -20,10 +20,13 @@ const toggleMenu = () => {
 <template>
     <div class="flex justify-between bg-pb-yellow p-2 lg:p-4">
         <div class="relative container flex justify-between items-center">
-            <div class="flex items-center font-bold gap-2 text-pb-soft-grey">
+            <Link
+                href="/"
+                class="flex items-center font-bold gap-2 text-pb-soft-grey"
+            >
                 <PongBirdLogo />
                 <div class="text-2xl">Pongbird</div>
-            </div>
+            </Link>
             <button
                 @click="toggleMenu"
                 value="hamburger"

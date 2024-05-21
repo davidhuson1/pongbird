@@ -18,12 +18,17 @@ class MatchController extends Controller
      */
     public function index()
     {
+
+        // $matches = MatchesResource::collection(Matches::all());
+
         return Inertia::render('MatchesPage', [
             'user' => Auth::user(),
-            'matches' => MatchesResource::collection(
-                Matches::where('opponent_a', Auth::id())
-                    ->orWhere('opponent_b', Auth::id())->get()
-            ),
+            // 'matches' => MatchesResource::collection(
+            //     Matches::where('opponent_a', Auth::id())
+            //         ->orWhere('opponent_b', Auth::id())->get()
+            // ),
+            // 'matches' => Matches::all(),
+            'matches' => MatchesResource::collection(Matches::all()),
             'users' => User::select('id', 'name')->get()
         ]);
         // return MatchesResource::collection(
@@ -61,11 +66,10 @@ class MatchController extends Controller
         $opponentB = $request->opponent_b;
 
         if ($scoreOpponentA > $scoreOpponentB) {
-            $winner = "opponent_a";
+            $winner =  User::findOrFail($opponentA)->name;
         } elseif ($scoreOpponentA < $scoreOpponentB) {
-            $winner = "opponent_b";
-        } else {
-            $winner = "tie";
+            $winner =  User::findOrFail($opponentA)->name;
+            $winner = "Tie";
         }
 
         EloRating::getNewRatingForMatch($opponentA, $opponentB, $scoreOpponentA, $scoreOpponentB);

@@ -14,8 +14,6 @@ const props = defineProps({
 
 const emit = defineEmits(["setOpponent"]);
 
-console.log(props.users);
-
 const searchString = ref("");
 const results = ref([]);
 const isOpen = ref(false);

@@ -99,7 +99,7 @@ const hanldeCreateMatch = () => {
             <p v-if="success" class="text-green-500">Match recorded! 🏓</p>
             <div class="pt-8 text-center">
                 <button
-                    v-if="!succes"
+                    v-if="!success"
                     @click.prevent="hanldeCreateMatch()"
                     class="bg-pb-yellow hover:bg-pb-yellow-dark text-white w-full font-bold py-2 px-6 rounded"
                 >
