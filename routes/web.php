@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/login', [AuthController::class, 'show'])->name('login');
+
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::inertia('/', 'HomePage');
 

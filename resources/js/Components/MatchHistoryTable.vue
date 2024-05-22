@@ -1,10 +1,9 @@
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 const page = usePage();
 
 const matches = computed(() => page.props.matches.data);
-// const matches = page.props.matches.data;
 
 console.log(matches.value);
 </script>
@@ -22,16 +21,19 @@ console.log(matches.value);
                 <div class="w-full text-center">Winner</div>
                 <div class="w-full text-center">Date</div>
             </div>
-            <div v-for="(match, index) in matches" class="flex">
+            <div
+                v-for="(match, index) in matches.slice().reverse()"
+                class="flex"
+            >
                 <div class="w-full text-center p-2 border-b">
-                    {{ match.relationships.opponent_a.name }}
+                    {{ match.attributes.opponent_a.name }}
                 </div>
                 <div class="w-full text-center p-2 border-b">
-                    {{ match.relationships.opponent_a.name }}
+                    {{ match.attributes.opponent_b.name }}
                 </div>
                 <div class="w-full text-center p-2 border-b">
-                    {{ match.attributes.score_opponent_a }} -
-                    {{ match.attributes.score_opponent_b }}
+                    {{ match.attributes.opponent_a.score }} -
+                    {{ match.attributes.opponent_b.score }}
                 </div>
                 <div class="w-full text-center p-2 border-b">
                     {{ match.attributes.winner }}

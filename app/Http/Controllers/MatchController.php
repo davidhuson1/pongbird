@@ -52,12 +52,10 @@ class MatchController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'user_id' => 'required|numeric',
-            'opponent_a' => 'required|numeric',
-            'opponent_b' => 'required|numeric',
+            'opponent_a' => 'required|numeric|different:opponent_b',
+            'opponent_b' => 'required|numeric|different:opponent_a',
             'score_opponent_a' => 'required|integer|min:0',
             'score_opponent_b' => 'required|integer|min:0',
-            // 'winner' => 'string|max:20'
         ]);
 
         $scoreOpponentA = $request->score_opponent_a;
@@ -68,8 +66,11 @@ class MatchController extends Controller
         if ($scoreOpponentA > $scoreOpponentB) {
             $winner =  User::findOrFail($opponentA)->name;
         } elseif ($scoreOpponentA < $scoreOpponentB) {
-            $winner =  User::findOrFail($opponentA)->name;
+            $winner =  User::findOrFail($opponentB)->name;
+        } elseif ($scoreOpponentA == $scoreOpponentB) {
             $winner = "Tie";
+        } else {
+            $winner = "Winner could not be determined";
         }
 
         EloRating::getNewRatingForMatch($opponentA, $opponentB, $scoreOpponentA, $scoreOpponentB);
@@ -83,9 +84,6 @@ class MatchController extends Controller
             'winner' => $winner,
         ]);
 
-        // DB::table('users')
-        //     ->where('id', 41)
-        //     ->update(['rank' => $newEloRating[NewRatingA]);
 
         return new MatchesResource($match);
     }

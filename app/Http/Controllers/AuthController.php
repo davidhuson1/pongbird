@@ -97,4 +97,8 @@ class AuthController extends Controller
     {
         return Inertia::render('LoginPage', []);
     }
+    public function signup()
+    {
+        return Inertia::render('RegisterPage', []);
+    }
 }

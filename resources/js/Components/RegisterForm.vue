@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import axios from "axios";
+import { Link, router } from "@inertiajs/vue3";
 
 const credentials = reactive({
     name: "",
@@ -13,19 +14,17 @@ const success = ref(false);
 
 const hanldeSignUp = () => {
     errors.value = null;
-    success.value = false;
 
     const axiosInstance = axios.create({
-        baseURL: "http://localhost/api",
+        baseURL: "http://localhost:8000/",
         headers: {},
     });
 
     axiosInstance
-        .post("/register", credentials)
+        .post("register", credentials)
         .then((response) => {
             if (response.status === 200) {
                 success.value = true;
-                window.location.href = "/login";
             }
         })
         .catch((error) => {
@@ -38,7 +37,7 @@ const hanldeSignUp = () => {
 <template>
     <div class="rounded-md">
         <div class="bg-white shadow-md p-8 lg:w-1/2 mx-auto">
-            <div class="p-2 text-center text-xl w-full">Register</div>
+            <div class="p-2 text-center text-xl w-full">Sign up</div>
             <div class="p-2">
                 <div class="w-full pb-2">
                     <input
@@ -89,16 +88,27 @@ const hanldeSignUp = () => {
 
             <div class="pt-8 text-center">
                 <button
+                    v-if="success"
+                    @click.prevent="router.visit('/login')"
+                    class="bg-pb-yellow hover:bg-pb-yellow-dark text-white w-full font-bold py-2 px-6 rounded"
+                >
+                    Sign in to your new account!
+                </button>
+                <button
+                    v-else
                     @click.prevent="hanldeSignUp()"
                     class="bg-pb-yellow hover:bg-pb-yellow-dark text-white w-full font-bold py-2 px-6 rounded"
                 >
                     Create account
                 </button>
+
                 <div class="pt-2 text-pb-soft-grey">
                     Already have an account?
-                    <a class="hover:text-pb-dark-grey underline" href="/login"
-                        >Sign in</a
-                    >
+                    <Link
+                        class="hover:text-pb-dark-grey underline"
+                        href="/login"
+                        >Sign in
+                    </Link>
                 </div>
             </div>
         </div>

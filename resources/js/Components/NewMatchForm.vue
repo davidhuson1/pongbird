@@ -5,6 +5,7 @@ import SearchAutoComplete from "./SearchAutoComplete.vue";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { router } from "@inertiajs/vue3";
+import ScoreInput from "./ScoreInput.vue";
 
 const page = usePage();
 const users = computed(() => page.props.users);
@@ -32,6 +33,7 @@ const hanldeCreateMatch = () => {
         .then((response) => {
             if (response.status === 201) {
                 success.value = true;
+                router.reload({ only: ["matches"] });
                 // window.location.href = "/matches";
                 return response.data;
             }
@@ -51,6 +53,7 @@ const hanldeCreateMatch = () => {
                 <div class="w-full pb-2">
                     <SearchAutoComplete
                         :disabled="success"
+                        :placeholder="'Opponent A'"
                         v-model="matchData.opponent_a"
                         @set-opponent="
                             (opponent) => (matchData.opponent_a = opponent)
@@ -61,6 +64,7 @@ const hanldeCreateMatch = () => {
                 <div class="w-full pb-2">
                     <SearchAutoComplete
                         :disabled="success"
+                        :placeholder="'Opponent B'"
                         v-model="matchData.opponent_b"
                         @set-opponent="
                             (opponent) => (matchData.opponent_b = opponent)
@@ -71,27 +75,25 @@ const hanldeCreateMatch = () => {
             </div>
             <div class="flex gap-2">
                 <div class="w-full pb-2">
-                    <input
-                        v-model="matchData.score_opponent_a"
-                        type="number"
-                        class="p-1 px-2 border rounded-sm w-full"
-                        name="Score opponent A"
-                        id="ScoreA"
-                        placeholder="Score A"
+                    <ScoreInput
                         :disabled="success"
+                        :placeholder="'Score A'"
                         :class="{ 'bg-gray-100': success }"
+                        @set-score="
+                            (score) => (matchData.score_opponent_a = score)
+                        "
+                        @input-error="(inputError) => (errors = inputError)"
                     />
                 </div>
                 <div class="w-full pb-2">
-                    <input
-                        v-model="matchData.score_opponent_b"
-                        type="number"
-                        class="p-1 px-2 border rounded-sm w-full"
-                        name="Score opponent B"
-                        id="ScoreB"
-                        placeholder="Score B"
+                    <ScoreInput
                         :disabled="success"
+                        :placeholder="'Score B'"
                         :class="{ 'bg-gray-100': success }"
+                        @set-score="
+                            (score) => (matchData.score_opponent_b = score)
+                        "
+                        @input-error="(inputError) => (errors = inputError)"
                     />
                 </div>
             </div>

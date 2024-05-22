@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import axios from "axios";
+import { Link, router } from "@inertiajs/vue3";
 
 const errors = ref(null);
 const success = ref(false);
@@ -25,7 +26,7 @@ const handleLogin = async () => {
         .then((response) => {
             if (response.status === 200) {
                 success.value = true;
-                window.location.href = "/dashboard";
+                router.visit("dashboard");
                 return response.data;
             }
         })
@@ -85,11 +86,11 @@ const handleLogin = async () => {
                 </button>
                 <div class="pt-2 text-pb-soft-grey">
                     Don't have an account?
-                    <a
+                    <Link
                         class="hover:text-pb-dark-grey underline"
-                        href="/register"
-                        >Sign up</a
-                    >
+                        href="/signup"
+                        >Sign up
+                    </Link>
                 </div>
             </div>
         </div>

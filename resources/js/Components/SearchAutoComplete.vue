@@ -10,6 +10,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    placeholder: {
+        type: String,
+        default: "",
+    },
 });
 
 const emit = defineEmits(["setOpponent"]);
@@ -52,7 +56,7 @@ const onSetOpponent = (result) => {
             v-model="searchString"
             @input="onChange"
             type="text"
-            placeholder="Opponent A"
+            :placeholder="placeholder"
             :disabled="disabled"
         />
         <ul v-if="error" class="w-full">
