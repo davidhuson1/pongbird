@@ -1,33 +1,36 @@
 <script setup>
+import { usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
 
-const data = ref([
-    {
-        rank: 1,
-        name: "David Huson",
-        rating: 9000,
-    },
-    {
-        rank: 2,
-        name: "Jan Jansen",
-        rating: 8000,
-    },
-    {
-        rank: 3,
-        name: "Piet Pietersen",
-        rating: 7000,
-    },
-    {
-        rank: 4,
-        name: "Annetje Annetjesen",
-        rating: 5000,
-    },
-    {
-        rank: 5,
-        name: "Karel Karelsen",
-        rating: 2000,
-    },
-]);
+const userRankings = usePage().props.users;
+
+// const data = ref([
+//     {
+//         rank: 1,
+//         name: "David Huson",
+//         rating: 9000,
+//     },
+//     {
+//         rank: 2,
+//         name: "Jan Jansen",
+//         rating: 8000,
+//     },
+//     {
+//         rank: 3,
+//         name: "Piet Pietersen",
+//         rating: 7000,
+//     },
+//     {
+//         rank: 4,
+//         name: "Annetje Annetjesen",
+//         rating: 5000,
+//     },
+//     {
+//         rank: 5,
+//         name: "Karel Karelsen",
+//         rating: 2000,
+//     },
+// ]);
 </script>
 
 <template>
@@ -41,7 +44,7 @@ const data = ref([
                 <div class="w-full text-center">Player</div>
                 <div class="w-full text-center">Rating</div>
             </div>
-            <div v-for="(item, index) in data" class="flex">
+            <div v-for="(item, index) in userRankings" class="flex">
                 <div class="w-full text-center p-2 border-b">
                     {{ index + 1 }}
                 </div>
