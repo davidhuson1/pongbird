@@ -10,7 +10,7 @@ const handleLogout = async () => {
     console.log(" logout");
 
     const axiosInstance = axios.create({
-        baseURL: "http://localhost:8000/",
+        baseURL: "/",
         headers: {},
     });
 
