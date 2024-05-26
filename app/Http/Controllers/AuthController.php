@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -21,7 +22,6 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            // $token = $request->user()->createToken('auth_token');
 
             return response()->json([
                 'user' => auth()->user(),
@@ -31,33 +31,7 @@ class AuthController extends Controller
         throw ValidationException::withMessages([
             'email' => 'Invalid credentials'
         ]);
-
-
-
-        // if (Auth::attempt($credentials)) {
-        //     return User::where('email', $request->email)->first();
-        // };
-
-        // return response(['message' => 'Wrong email or password'], 401, []);
     }
-    // if (Auth::attempt($credentials)) {
-    //     $user = User::where('email', $request->email)->first();
-
-    //     return response([
-    //         'user' => $user,
-    //         'token' => $user->createToken('API token of' . $user->name)->plainTextToken
-    //     ]);
-    // $request->session()->regenerate();
-
-    // return redirect()->intended('dashboard');
-    // }
-
-    // return back()->withErrors([
-    //     'email' => 'The provided credentials do not match our records.',
-    // ])->onlyInput('email');
-
-
-
 
 
     public function register(Request $request)
@@ -74,6 +48,10 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
+        event(new Registered($user));
+
+        Auth::login($user);
+
         return response([
             'user' => $user,
             'token' => $user->createToken('API token of ' . $user->name)->plainTextToken
@@ -87,8 +65,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
-        // return redirect('/');
     }
 
 
@@ -100,5 +76,12 @@ class AuthController extends Controller
     public function signup()
     {
         return Inertia::render('RegisterPage', []);
+    }
+
+    public function sendVerificationEmail(Request $request)
+    {
+        $request->user()->sendEmailVerificationNotification();
+
+        return response([], 200, []);
     }
 }
