@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Rules\SpecificDomainsOnly;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
 
             return response()->json([
@@ -37,7 +38,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255|string|unique:users,name',
+            'name' => ['required', 'max:255', 'string', 'unique:users', new SpecificDomainsOnly],
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6'
         ]);
