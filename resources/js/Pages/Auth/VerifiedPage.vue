@@ -1,8 +1,6 @@
 <script setup>
 import { Link, usePage } from "@inertiajs/vue3";
 import Navbar from "../../Components/Navbar.vue";
-import { router } from "@inertiajs/vue3";
-import { ref } from "vue";
 
 const user = usePage().props.auth.user;
 </script>
@@ -25,7 +23,7 @@ const user = usePage().props.auth.user;
                         href="/"
                         class="bg-pb-yellow hover:bg-pb-yellow-dark text-white w-full font-bold py-2 px-6 rounded"
                     >
-                        Go to leaderboard
+                        Go to rankings
                     </Link>
                 </div>
             </div>

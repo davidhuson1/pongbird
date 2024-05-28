@@ -92,7 +92,7 @@ const handleLogin = async () => {
             <div class="pt-6 text-center">
                 <button
                     @click.prevent="handleLogin()"
-                    class="bg-pb-yellow hover:bg-pb-yellow-dark text-white w-full font-bold py-2 px-6 rounded"
+                    class="bg-pb-yellow hover:bg-pb-yellow-dark text-pb-dark-grey w-full font-bold py-2 px-6 rounded"
                 >
                     Login
                 </button>

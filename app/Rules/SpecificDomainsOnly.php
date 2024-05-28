@@ -22,7 +22,7 @@ class SpecificDomainsOnly implements ValidationRule
         ];
 
         if (!in_array($domain, $domains)) {
-            $fail('The :attribute must be one of the following domains: ' . implode(', ', $domains));
+            $fail('The :attribute must be from one of the following domains: ' . implode(', ', $domains));
         }
     }
 }

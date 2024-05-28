@@ -7,7 +7,7 @@ import NewMatchForm from "../Components/NewMatchForm.vue";
 <template>
     <main class="bg-pb-light-grey">
         <Navbar />
-        <div class="min-h-screen container pt-8">
+        <div class="min-h-screen container py-8">
             <NewMatchForm class="mb-8" />
             <MatchHistoryTable />
         </div>

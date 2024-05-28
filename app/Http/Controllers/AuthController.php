@@ -38,8 +38,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'max:255', 'string', 'unique:users', new SpecificDomainsOnly],
-            'email' => 'required|email|unique:users,email',
+            'name' => ['required', 'max:255', 'string', 'unique:users',],
+            'email' => ['required', 'email', 'unique:users,email', new SpecificDomainsOnly],
             'password' => 'required|confirmed|min:6'
         ]);
 
@@ -72,11 +72,11 @@ class AuthController extends Controller
 
     public function show()
     {
-        return Inertia::render('LoginPage', []);
+        return Inertia::render('Auth/LoginPage', []);
     }
     public function signup()
     {
-        return Inertia::render('RegisterPage', []);
+        return Inertia::render('Auth/RegisterPage', []);
     }
 
     public function sendVerificationEmail(Request $request)
