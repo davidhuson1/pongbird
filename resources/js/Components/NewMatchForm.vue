@@ -47,8 +47,8 @@ const hanldeCreateMatch = () => {
 
 <template>
     <div class="rounded-md">
-        <div class="bg-white shadow-md p-8 lg:w-1/2 mx-auto">
-            <div class="p-2 text-center text-xl w-full">New Match</div>
+        <div class="bg-white text-pb-dark-grey shadow-md p-8 lg:w-1/2 mx-auto">
+            <div class="p-2 text-center text-lg w-full pb-8">New Match</div>
             <div class="flex gap-2">
                 <div class="w-full pb-2">
                     <SearchAutoComplete
@@ -103,14 +103,14 @@ const hanldeCreateMatch = () => {
                 <button
                     v-if="!success"
                     @click.prevent="hanldeCreateMatch()"
-                    class="bg-pb-yellow hover:bg-pb-yellow-dark text-white w-full font-bold py-2 px-6 rounded"
+                    class="bg-pb-yellow hover:bg-pb-yellow-dark w-full font-bold py-2 px-6 rounded"
                 >
                     Submit new match
                 </button>
                 <button
                     v-else
                     @click="() => router.visit('/matches')"
-                    class="bg-pb-yellow hover:bg-pb-yellow-dark text-white w-full font-bold py-2 px-6 rounded"
+                    class="bg-pb-yellow hover:bg-pb-yellow-dark w-full font-bold py-2 px-6 rounded"
                 >
                     Submit another match
                 </button>

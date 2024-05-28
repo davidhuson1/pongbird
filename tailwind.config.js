@@ -26,7 +26,7 @@ export default {
                 center: true,
             },
             fontFamily: {
-                sans: ["Quicksand", "Sans-serif"],
+                sans: ["Noto Sans", "Quicksand", "Sans-serif"],
             },
         },
     },

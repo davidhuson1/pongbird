@@ -7,8 +7,6 @@ const page = usePage();
 const user = computed(() => page.props.auth.user);
 
 const handleLogout = async () => {
-    console.log(" logout");
-
     const axiosInstance = axios.create({
         baseURL: "/",
         headers: {},

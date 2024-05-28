@@ -1,13 +1,13 @@
 <script setup>
-import Navbar from "../Components/Navbar.vue";
-import RankingTable from "../Components/RankingTable.vue";
+import Navbar from "../../Components/Navbar.vue";
+import RegisterForm from "../../Components/RegisterForm.vue";
 </script>
 
 <template>
     <main class="bg-pb-light-grey">
         <Navbar />
         <div class="min-h-screen container pt-8">
-            <RankingTable />
+            <RegisterForm />
         </div>
     </main>
 </template>

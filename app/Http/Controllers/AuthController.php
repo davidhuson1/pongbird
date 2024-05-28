@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Rules\SpecificDomainsOnly;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -19,9 +21,8 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-            // $token = $request->user()->createToken('auth_token');
 
             return response()->json([
                 'user' => auth()->user(),
@@ -31,40 +32,14 @@ class AuthController extends Controller
         throw ValidationException::withMessages([
             'email' => 'Invalid credentials'
         ]);
-
-
-
-        // if (Auth::attempt($credentials)) {
-        //     return User::where('email', $request->email)->first();
-        // };
-
-        // return response(['message' => 'Wrong email or password'], 401, []);
     }
-    // if (Auth::attempt($credentials)) {
-    //     $user = User::where('email', $request->email)->first();
-
-    //     return response([
-    //         'user' => $user,
-    //         'token' => $user->createToken('API token of' . $user->name)->plainTextToken
-    //     ]);
-    // $request->session()->regenerate();
-
-    // return redirect()->intended('dashboard');
-    // }
-
-    // return back()->withErrors([
-    //     'email' => 'The provided credentials do not match our records.',
-    // ])->onlyInput('email');
-
-
-
 
 
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255|string|unique:users,name',
-            'email' => 'required|email|unique:users,email',
+            'name' => ['required', 'max:255', 'string', 'unique:users',],
+            'email' => ['required', 'email', 'unique:users,email', new SpecificDomainsOnly],
             'password' => 'required|confirmed|min:6'
         ]);
 
@@ -73,6 +48,10 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
 
         return response([
             'user' => $user,
@@ -87,18 +66,23 @@ class AuthController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
-        // return redirect('/');
     }
 
 
 
     public function show()
     {
-        return Inertia::render('LoginPage', []);
+        return Inertia::render('Auth/LoginPage', []);
     }
     public function signup()
     {
-        return Inertia::render('RegisterPage', []);
+        return Inertia::render('Auth/RegisterPage', []);
+    }
+
+    public function sendVerificationEmail(Request $request)
+    {
+        $request->user()->sendEmailVerificationNotification();
+
+        return response([], 200, []);
     }
 }

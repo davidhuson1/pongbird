@@ -25,6 +25,7 @@ const hanldeSignUp = () => {
         .then((response) => {
             if (response.status === 200) {
                 success.value = true;
+                router.visit("email/verify");
             }
         })
         .catch((error) => {

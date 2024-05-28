@@ -1,20 +1,20 @@
 <script setup>
 import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
+
 const page = usePage();
-
 const matches = computed(() => page.props.matches.data);
-
-console.log(matches.value);
 </script>
 
 <template>
-    <div class="bg-white mx-auto rounded-md">
+    <div class="bg-white text-pb-dark-grey mx-auto rounded-md">
         <div class="w-full shadow-md">
-            <div class="p-2 text-center text-xl w-full border-double border-b">
+            <div
+                class="p-2 text-center text-lg w-full font-semibold border-b-2"
+            >
                 Matches
             </div>
-            <div class="p-2 flex font-bold border-b">
+            <div class="p-2 flex font-medium border-b-2">
                 <div class="w-full text-center">Opponent A</div>
                 <div class="w-full text-center">Opponent B</div>
                 <div class="w-full text-center">Score</div>
