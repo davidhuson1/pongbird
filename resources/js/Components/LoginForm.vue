@@ -52,7 +52,6 @@ const handleLogin = async () => {
                         class="p-1 px-2 border rounded-md w-full"
                         name="email"
                         id="email"
-                        aria-describedby="emailHelpId"
                         placeholder="user@email.com"
                     />
                 </div>
@@ -89,19 +88,26 @@ const handleLogin = async () => {
                 </p>
             </div>
 
-            <div class="pt-6 text-center">
+            <div class="pt-8 text-center">
                 <button
                     @click.prevent="handleLogin()"
                     class="bg-pb-yellow hover:bg-pb-yellow-dark text-pb-dark-grey w-full font-bold py-2 px-6 rounded"
                 >
                     Login
                 </button>
-                <div class="pt-2 text-pb-soft-grey">
+                <div class="pt-4 text-pb-soft-grey">
                     Don't have an account?
                     <Link
                         class="hover:text-pb-dark-grey underline"
                         href="/signup"
                         >Sign up
+                    </Link>
+                </div>
+                <div class="pt-2 text-pb-soft-grey">
+                    <Link
+                        class="hover:text-pb-dark-grey underline"
+                        href="/forgot-password"
+                        >Forgotten your password?
                     </Link>
                 </div>
             </div>
