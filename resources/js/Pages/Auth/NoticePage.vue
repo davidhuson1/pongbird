@@ -1,14 +1,15 @@
 <script setup>
 import { Link, usePage } from "@inertiajs/vue3";
 import Navbar from "../../Components/Navbar.vue";
-import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const user = usePage().props.auth.user;
 const errors = ref(null);
 const success = ref(false);
+const isLoading = ref(false);
 
 function hanldeResendLink() {
+    isLoading.value = true;
     errors.value = null;
 
     const axiosInstance = axios.create({
@@ -19,11 +20,13 @@ function hanldeResendLink() {
     axiosInstance
         .post("email/verification-notification")
         .then((response) => {
+            isLoading.value = false;
             if (response.status === 200) {
                 success.value = true;
             }
         })
         .catch((error) => {
+            isLoading.value = false;
             console.log(error.message);
             errors.value = error.response.data.message;
         });
@@ -33,6 +36,7 @@ function hanldeResendLink() {
 <template>
     <main class="bg-pb-light-grey">
         <Navbar />
+        <Loading v-if="isLoading" class="absolute top-0 left-0 w-full h-full" />
         <div class="min-h-screen container pt-8 text-center">
             <div class="rounded-md">
                 <div class="bg-white shadow-md p-8 lg:w-1/2 mx-auto">

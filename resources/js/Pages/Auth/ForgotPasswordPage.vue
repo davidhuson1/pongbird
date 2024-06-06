@@ -1,18 +1,20 @@
 <script setup>
 import { Link, usePage } from "@inertiajs/vue3";
 import Navbar from "../../Components/Navbar.vue";
-import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
+import Loading from "../../Components/Loading.vue";
 
-const user = usePage().props.auth.user;
 const errors = ref(null);
 const success = ref(false);
+const isLoading = ref(false);
 
 const credentials = ref({
     email: "",
 });
 
 const handleSendResetLink = () => {
+    isLoading.value = true;
+
     const axiosInstance = axios.create({
         baseURL: "/",
         headers: {},
@@ -21,12 +23,14 @@ const handleSendResetLink = () => {
     axiosInstance
         .post("forgot-password", credentials.value)
         .then((response) => {
+            isLoading.value = false;
             if (response.status === 200) {
                 errors.value = null;
                 success.value = true;
             }
         })
         .catch((error) => {
+            isLoading.value = false;
             console.log(error.message);
             errors.value = error.response.data.message;
         });
@@ -36,6 +40,7 @@ const handleSendResetLink = () => {
 <template>
     <main class="bg-pb-light-grey">
         <Navbar />
+        <Loading v-if="isLoading" class="absolute top-0 left-0 w-full h-full" />
         <div class="min-h-screen container pt-8 text-center">
             <div class="rounded-md">
                 <div class="bg-white shadow-md p-8 lg:w-1/2 mx-auto">

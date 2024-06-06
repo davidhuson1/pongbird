@@ -2,6 +2,7 @@
 import { reactive, ref } from "vue";
 import axios from "axios";
 import { Link, router } from "@inertiajs/vue3";
+import Loading from "./Loading.vue";
 
 const credentials = reactive({
     name: "",
@@ -9,10 +10,13 @@ const credentials = reactive({
     password: "",
     password_confirmation: "",
 });
+
+const isLoading = ref(false);
 const errors = ref(null);
 const success = ref(false);
 
 const hanldeSignUp = () => {
+    isLoading.value = true;
     errors.value = null;
 
     const axiosInstance = axios.create({
@@ -23,12 +27,14 @@ const hanldeSignUp = () => {
     axiosInstance
         .post("register", credentials)
         .then((response) => {
+            isLoading.value = false;
             if (response.status === 200) {
                 success.value = true;
                 router.visit("email/verify");
             }
         })
         .catch((error) => {
+            isLoading.value = false;
             console.log(error.message);
             errors.value = error.response.data.message;
         });
@@ -37,6 +43,7 @@ const hanldeSignUp = () => {
 
 <template>
     <div class="rounded-md">
+        <Loading v-if="isLoading" class="absolute top-0 left-0 w-full h-full" />
         <div class="bg-white shadow-md p-8 lg:w-1/2 mx-auto">
             <div class="p-2 text-center text-xl w-full">Sign up</div>
             <div class="p-2">

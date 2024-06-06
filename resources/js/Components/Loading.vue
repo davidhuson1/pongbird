@@ -1,5 +1,5 @@
 <script setup>
-import LoadingAnimation from "../../images/loading.gif";
+import LoadingAnimation from "../../images/loadingv4.gif";
 </script>
 
 <template>
