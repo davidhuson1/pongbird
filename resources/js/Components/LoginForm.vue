@@ -2,9 +2,11 @@
 import { reactive, ref } from "vue";
 import axios from "axios";
 import { Link, router } from "@inertiajs/vue3";
+import Loading from "./Loading.vue";
 
 const errors = ref(null);
 const success = ref(false);
+const isLoading = ref(false);
 
 const credentials = reactive({
     email: "",
@@ -13,6 +15,7 @@ const credentials = reactive({
 });
 
 const handleLogin = async () => {
+    isLoading.value = true;
     errors.value = null;
     success.value = false;
 
@@ -25,12 +28,14 @@ const handleLogin = async () => {
         .post("login", credentials)
         .then((response) => {
             if (response.status === 200) {
+                isLoading.value = false;
                 success.value = true;
                 router.visit("dashboard");
                 return response.data;
             }
         })
         .catch((error) => {
+            isLoading.value = false;
             console.log("errors:", error.message);
             errors.value = error.response.data.message;
         });
@@ -39,6 +44,7 @@ const handleLogin = async () => {
 
 <template>
     <div class="rounded-md">
+        <Loading v-if="isLoading" class="absolute top-0 left-0 w-full h-full" />
         <div class="bg-white shadow-md p-8 lg:w-1/2 mx-auto">
             <div class="p-2 text-center text-xl w-full">Login</div>
             <div class="p-2">
