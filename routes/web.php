@@ -87,8 +87,6 @@ Route::post('/reset-password', function (Request $request) {
 
 
 
-
-
 // Protected routes
 Route::group(['middleware' => ["auth:sanctum", 'verified']], function () {
     Route::resource('/matches', MatchController::class);

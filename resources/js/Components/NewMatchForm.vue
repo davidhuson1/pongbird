@@ -6,6 +6,7 @@ import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { router } from "@inertiajs/vue3";
 import ScoreInput from "./ScoreInput.vue";
+import Loading from "./Loading.vue";
 
 const page = usePage();
 const users = computed(() => page.props.users);
@@ -16,10 +17,13 @@ const matchData = reactive({
     score_opponent_a: "",
     score_opponent_b: "",
 });
+
+const isLoading = ref(false);
 const errors = ref(null);
 const success = ref(false);
 
 const hanldeCreateMatch = () => {
+    isLoading.value = true;
     errors.value = null;
     success.value = false;
 
@@ -32,13 +36,14 @@ const hanldeCreateMatch = () => {
         .post("matches", matchData)
         .then((response) => {
             if (response.status === 201) {
+                isLoading.value = false;
                 success.value = true;
                 router.reload({ only: ["matches"] });
-                // window.location.href = "/matches";
                 return response.data;
             }
         })
         .catch((error) => {
+            isLoading.value = false;
             console.log(error.message);
             errors.value = error.response.data.message;
         });
@@ -47,6 +52,7 @@ const hanldeCreateMatch = () => {
 
 <template>
     <div class="rounded-md">
+        <Loading v-if="isLoading" class="absolute top-0 left-0 w-full h-full" />
         <div class="bg-white text-pb-dark-grey shadow-md p-8 lg:w-1/2 mx-auto">
             <div class="p-2 text-center text-lg w-full pb-8">New Match</div>
             <div class="flex gap-2">

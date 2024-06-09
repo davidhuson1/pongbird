@@ -14,4 +14,11 @@ createInertiaApp({
             .use(plugin)
             .mount(el);
     },
+    progress: {
+        // The delay after which the progress bar will appear, in milliseconds...
+        delay: 250,
+
+        // The color of the progress bar...
+        color: "#90b6a5",
+    },
 });

@@ -1,8 +1,9 @@
 <script setup>
 import { reactive, ref } from "vue";
 import axios from "axios";
-import { Link, router } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
+import Loading from "./Loading.vue";
 
 const page = usePage();
 
@@ -12,10 +13,13 @@ const credentials = reactive({
     password_confirmation: "",
     token: page.props.token,
 });
+
+const isLoading = ref(false);
 const errors = ref(null);
 const success = ref(false);
 
 const hanldeSetNewPassword = () => {
+    isLoading.value = true;
     errors.value = null;
 
     const axiosInstance = axios.create({
@@ -26,11 +30,13 @@ const hanldeSetNewPassword = () => {
     axiosInstance
         .post("reset-password", credentials)
         .then((response) => {
+            isLoading.value = false;
             if (response.status === 200) {
                 success.value = true;
             }
         })
         .catch((error) => {
+            isLoading.value = false;
             console.log(error.message);
             errors.value = error.response.data.message;
         });
@@ -39,6 +45,7 @@ const hanldeSetNewPassword = () => {
 
 <template>
     <div class="rounded-md">
+        <Loading v-if="isLoading" class="absolute top-0 left-0 w-full h-full" />
         <div class="bg-white shadow-md p-8 lg:w-1/2 mx-auto">
             <div class="p-2 text-center text-xl w-full">
                 Set your new password

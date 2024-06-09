@@ -1,12 +1,15 @@
 <script setup>
 import { usePage, router } from "@inertiajs/vue3";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import EmptyProfileImage from "../../images/empty_profile_image.webp";
+import Loading from "./Loading.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
+const isLoading = ref(false);
 
 const handleLogout = async () => {
+    isLoading.value = true;
     const axiosInstance = axios.create({
         baseURL: "/",
         headers: {},
@@ -15,12 +18,14 @@ const handleLogout = async () => {
     await axiosInstance
         .post("logout")
         .then((response) => {
+            isLoading.value = false;
             if (response.status === 200) {
                 router.visit("/");
                 return response.data;
             }
         })
         .catch((error) => {
+            isLoading.value = false;
             console.log("errors:", error.message);
         });
 };
@@ -28,6 +33,7 @@ const handleLogout = async () => {
 
 <template>
     <div class="bg-white mx-auto rounded-md">
+        <Loading v-if="isLoading" class="absolute top-0 left-0 w-full h-full" />
         <div class="my-4 w-full shadow-md">
             <div class="p-2 text-center text-xl w-full border-double border-b">
                 Dashboard of {{ user.first_name }}
