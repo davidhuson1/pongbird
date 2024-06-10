@@ -96,8 +96,10 @@ Route::group(['middleware' => ["auth:sanctum", 'verified']], function () {
 });
 
 
-// Profile iamge routes
+// Profile image routes
 Route::post('upload-profile-image', [DiskController::class, 'uploadImageToS3']);
+Route::get('delete-profile-image', [DiskController::class, 'delete']);
+
 
 // Route for php debugging
 Route::get('phpmyinfo', function () {
