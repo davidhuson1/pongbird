@@ -8,6 +8,11 @@ const page = usePage();
 const user = computed(() => page.props.auth.user);
 const isLoading = ref(false);
 
+const profileImage = ref(EmptyProfileImage);
+const newProfileImage = ref(null);
+const progress = ref("");
+const uploadStatus = ref(false);
+
 const handleLogout = async () => {
     isLoading.value = true;
     const axiosInstance = axios.create({
@@ -26,6 +31,36 @@ const handleLogout = async () => {
         })
         .catch((error) => {
             isLoading.value = false;
+            console.log("errors:", error.message);
+        });
+};
+
+const handleImageUpload = async () => {
+    uploadStatus.value = true;
+
+    const image = newProfileImage.value.files[0];
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const axiosInstance = axios.create({
+        baseURL: "/",
+        headers: { "Content-Type": "multipart-formdata" },
+        onUploadProgress: (progressEvent) => {
+            progress.value = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+            );
+        },
+    });
+
+    await axiosInstance
+        .post("upload-profile-image", formData)
+        .then((response) => {
+            uploadStatus.value = false;
+
+            profileImage.value = response.data.url;
+        })
+        .catch((error) => {
+            uploadStatus.value = false;
             console.log("errors:", error.message);
         });
 };
@@ -55,7 +90,7 @@ const handleLogout = async () => {
 
                     <button
                         @click.prevent="handleLogout()"
-                        class="flex flex-row shadow-md justify-center bg-gray-300 hover:bg-gray-100 border-pb-yellow w-full font-bold py-3 px-6 my-4 rounded"
+                        class="flex flex-row font-medium shadow-md justify-center bg-gray-300 hover:bg-gray-100 border-pb-yellow w-full lg:w-1/2 py-3 px-6 my-4 rounded"
                     >
                         Logout
                         <div class="inline w-6 h-6">
@@ -76,8 +111,51 @@ const handleLogout = async () => {
                         </div>
                     </button>
                 </div>
-                <div class="w-full lg:w-1/2">
-                    <img class="w-full shadow-md" :src="EmptyProfileImage" />
+                <div class="w-full lg:w-1/3">
+                    <img class="w-full shadow-md mb-6" :src="profileImage" />
+                    <div>
+                        <label
+                            class="cursor-pointer text-sm w-full lg:w-fit font-medium shadow-md bg-pb-yellow hover:bg-pb-yellow-dark py-3 px-6 my-4 rounded"
+                            for="image-upload"
+                            >Upload profile picture</label
+                        >
+                        <input
+                            ref="newProfileImage"
+                            id="image-upload"
+                            style="visibility: hidden"
+                            type="file"
+                            @change="handleImageUpload()"
+                        />
+                    </div>
+
+                    <!-- <input
+                        type="file"
+                        ref="myImage"
+                        id="image-upload"
+                        class="text-sm w-full lg:w-fit font-medium shadow-md bg-pb-yellow hover:bg-pb-yellow-dark py-3 px-6 my-4 rounded"
+                        @change="handleImageUpload()"
+                    /> -->
+                    <!-- <button
+                        @click.prevent="handleImageUpload()"
+                        class="text-sm w-full lg:w-fit font-medium shadow-md bg-pb-yellow hover:bg-pb-yellow-dark py-3 px-6 my-4 rounded"
+                    >
+                        Upload profile picture
+                    </button> -->
+                    <div v-if="uploadStatus" class="my-4">
+                        <div class="progress py-3">
+                            <div
+                                class="progress-bar bg-pb-yellow"
+                                role="progressbar"
+                                :style="{ width: `${progress}%` }"
+                                :aria-valuenow="progress"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                            >
+                                Uploading... {{ progress }}
+                            </div>
+                        </div>
+                    </div>
+                    <p id="errors"></p>
                 </div>
             </div>
         </div>

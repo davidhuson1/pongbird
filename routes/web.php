@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DiskController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\RankingController;
 use App\Models\User;
@@ -93,3 +94,12 @@ Route::group(['middleware' => ["auth:sanctum", 'verified']], function () {
     Route::get('/matches', [MatchController::class, 'index']);
     Route::inertia('/dashboard', 'DashboardPage');
 });
+
+
+// Profile iamge routes
+Route::post('upload-profile-image', [DiskController::class, 'uploadImageToS3']);
+
+// Route for php debugging
+Route::get('phpmyinfo', function () {
+    phpinfo();
+})->name('phpmyinfo');
