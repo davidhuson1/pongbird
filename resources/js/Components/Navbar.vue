@@ -2,7 +2,7 @@
 import PongBirdLogo from "./PongbirdLogo.vue";
 import { Link, router, usePage } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
-import UserLogo from "./UserLogo.vue";
+import UserCardSmall from "./UserCardSmall.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user ?? null);
@@ -57,12 +57,7 @@ const toggleMenu = () => {
                 >
 
                 <div v-if="user">
-                    <a class="hover:text-pb-dark-grey" href="/dashboard">
-                        <UserLogo
-                            class="inline w-6 h-6 mr-1 hover:stroke-pb-dark-grey"
-                        />
-                        <p class="inline">{{ user.first_name }}</p>
-                    </a>
+                    <UserCardSmall />
                 </div>
             </div>
 
@@ -77,15 +72,8 @@ const toggleMenu = () => {
                     >Login</Link
                 >
 
-                <div v-if="user" class="">
-                    <a class="hover:text-pb-dark-grey" href="/dashboard">
-                        <div class="flex flex-row items-center">
-                            <UserLogo
-                                class="w-6 h-6 pt-1 hover:stroke-pb-dark-grey"
-                            />
-                            <p class="">{{ user.first_name }}</p>
-                        </div>
-                    </a>
+                <div v-if="user">
+                    <UserCardSmall />
                 </div>
             </div>
         </div>

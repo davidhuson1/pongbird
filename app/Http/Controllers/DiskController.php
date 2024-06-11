@@ -33,8 +33,7 @@ class DiskController extends Controller
             // scale to fixed height
             $img = $img->cover(500, 500);
 
-            // encode in jpeg format and cast result as string
-            // $imagedata = (string) $image->toJpeg();
+            // encode in webp format
             $encodedImg = $img->toWebp(75);
 
             Storage::disk('s3')->put($path, $encodedImg);
@@ -45,10 +44,6 @@ class DiskController extends Controller
 
 
             return response()->json(['url' => $awsPath], 200);
-
-
-            // $awsPath = Storage::disk('s3')->url($path);
-            // return response()->json(['url' => $awsPath], 200);
         }
     }
 
