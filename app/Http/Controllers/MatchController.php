@@ -73,7 +73,13 @@ class MatchController extends Controller
             $winner = "Winner could not be determined";
         }
 
-        EloRating::getNewRatingForMatch($opponentA, $opponentB, $scoreOpponentA, $scoreOpponentB);
+        $result = EloRating::getNewRatingForMatch($opponentA, $opponentB, $scoreOpponentA, $scoreOpponentB);
+
+        $ratingChangeA = $result['newRatingA'] - $result['currentRatingA'];
+        $ratingChangeB = $result['newRatingB'] - $result['currentRatingB'];
+
+        User::find($opponentA)->update(['latest_rating_change' => $ratingChangeA]);
+        User::find($opponentB)->update(['latest_rating_change' => $ratingChangeB]);
 
         $match = Matches::create([
             'user_id' => Auth::user()->id,
@@ -82,6 +88,8 @@ class MatchController extends Controller
             'score_opponent_a' => $request->score_opponent_a,
             'score_opponent_b' => $request->score_opponent_b,
             'winner' => $winner,
+            'rating_change_opponent_a' => $ratingChangeA,
+            'rating_change_opponent_b' => $ratingChangeB,
         ]);
 
 

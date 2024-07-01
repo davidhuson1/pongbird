@@ -26,12 +26,8 @@ class EloRating
 
     public static function getNewRatingForMatch($opponentA, $opponentB,  int $scoreA, int $scoreB)
     {
-
-
-
         $currentRatingA = User::find($opponentA)->rating;
         $currentRatingB = User::find($opponentB)->rating;
-
 
         $expectedScoreA = 1 / (1 + (10 ** (($currentRatingB - $currentRatingA) / 400)));
         $expectedScoreB = 1 / (1 + (10 ** (($currentRatingA - $currentRatingB) / 400)));
@@ -86,8 +82,8 @@ class EloRating
             "expected score B" => $expectedScoreB,
             "score A" => $scoreA,
             "score B" => $scoreB,
-            "currentRating A" => $currentRatingA,
-            "currentRating B" => $currentRatingB,
+            "currentRatingA" => $currentRatingA,
+            "currentRatingB" => $currentRatingB,
             "newRatingA" => $newRatingA,
             "newRatingB" => $newRatingB
         ];
