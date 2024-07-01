@@ -13,7 +13,7 @@ class RankingController extends Controller
     {
         return Inertia::render('HomePage', [
             'user' => Auth::user(),
-            'users' => User::select('id', 'name', 'rating', 'profile_picture')->orderBy('rating', 'desc')->get()
+            'users' => User::select('id', 'name', 'rating', 'profile_picture', 'latest_rating_change')->orderBy('rating', 'desc')->get(),
         ]);
     }
 }

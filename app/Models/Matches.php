@@ -15,7 +15,9 @@ class Matches extends Model
         'opponent_b',
         'score_opponent_a',
         'score_opponent_b',
-        'winner'
+        'winner',
+        'rating_change_opponent_a',
+        'rating_change_opponent_b',
     ];
 
     public function user()
